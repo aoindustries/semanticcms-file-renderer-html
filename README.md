@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://aoindustries.com/) [SemanticCMS](https://semanticcms.com/) / [File](https://semanticcms.com/file/) / [Renderer HTML](https://semanticcms.com/file/renderer/html/)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [SemanticCMS](https://github.com/aoindustries/semanticcms) / [File](https://github.com/aoindustries/semanticcms-file) / [Renderer HTML](https://github.com/aoindustries/semanticcms-file-renderer-html)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-alpha">
 		<img src="https://semanticcms.com/ao-badges/project-alpha.svg" alt="project: alpha" />
