@@ -56,31 +56,29 @@ along with semanticcms-file-renderer-html.  If not, see <http://www.gnu.org/lice
 		<profile>
 			<id>release</id>
 			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<links>
-									<link>${javac.link.javaApi}</link>
-									<link>${javac.link.javaeeApi.6}</link>
-									<link>https://aoindustries.com/ao-encoding/apidocs/</link>
-									<link>https://aoindustries.com/ao-io-buffer/apidocs/</link>
-									<link>https://aoindustries.com/ao-net-types/apidocs/</link>
-									<link>https://aoindustries.com/aocode-public/apidocs/</link>
-									<link>https://semanticcms.com/core/controller/apidocs/</link>
-									<link>https://semanticcms.com/core/model/apidocs/</link>
-									<link>https://semanticcms.com/core/pages/apidocs/</link>
-									<link>https://semanticcms.com/core/renderer/html/apidocs/</link>
-									<link>https://semanticcms.com/core/resources/apidocs/</link>
-									<link>https://semanticcms.com/core/servlet/apidocs/</link>
-									<link>https://semanticcms.com/file/model/apidocs/</link>
-									<link>https://semanticcms.com/openfile/servlet/apidocs/</link>
-								</links>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<links>
+								<link>${javac.link.javaApi}</link>
+								<link>${javac.link.javaeeApi.6}</link>
+								<link>https://aoindustries.com/ao-encoding/apidocs</link>
+								<link>https://aoindustries.com/ao-io-buffer/apidocs</link>
+								<link>https://aoindustries.com/ao-net-types/apidocs</link>
+								<link>https://aoindustries.com/aocode-public/apidocs</link>
+								<link>https://semanticcms.com/core/controller/apidocs</link>
+								<link>https://semanticcms.com/core/model/apidocs</link>
+								<link>https://semanticcms.com/core/pages/apidocs</link>
+								<link>https://semanticcms.com/core/renderer/html/apidocs</link>
+								<link>https://semanticcms.com/core/resources/apidocs</link>
+								<link>https://semanticcms.com/core/servlet/apidocs</link>
+								<link>https://semanticcms.com/file/model/apidocs</link>
+								<link>https://semanticcms.com/openfile/servlet/apidocs</link>
+							</links>
+						</configuration>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 	</profiles>
