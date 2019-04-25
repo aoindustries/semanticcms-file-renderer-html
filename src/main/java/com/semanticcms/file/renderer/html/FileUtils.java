@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-renderer-html - Files referenced in HTML in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -69,11 +69,7 @@ final public class FileUtils {
 				logger.warning("Unable to open local files, if desktop integration is desired, add the semanticcms-openfile-servlet package.");
 				openFileNotFound = true;
 				return false;
-			} catch(NoSuchMethodException e) {
-				throw new ServletException(e);
-			} catch(IllegalAccessException e) {
-				throw new ServletException(e);
-			} catch(InvocationTargetException e) {
+			} catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 				throw new ServletException(e);
 			}
 		}
