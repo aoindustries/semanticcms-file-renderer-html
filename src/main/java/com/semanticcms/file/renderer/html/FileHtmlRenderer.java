@@ -28,7 +28,7 @@ import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextIn
 import static com.aoindustries.encoding.TextInXhtmlEncoder.encodeTextInXhtml;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
-import com.aoindustries.servlet.ServletUtil;
+import com.aoindustries.net.URIEncoder;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
 import com.aoindustries.util.Tuple2;
@@ -178,7 +178,7 @@ final public class FileHtmlRenderer {
 						;
 					}
 					encodeTextInXhtmlAttribute(
-						response.encodeURL(ServletUtil.encodeURI(urlPath, response)),
+						response.encodeURL(URIEncoder.encodeURI(urlPath)),
 						out
 					);
 				}
