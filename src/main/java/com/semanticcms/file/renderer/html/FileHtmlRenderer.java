@@ -54,6 +54,7 @@ import javax.servlet.jsp.SkipPageException;
 
 final public class FileHtmlRenderer {
 
+	@FunctionalInterface
 	public static interface FileImplBody<E extends Throwable> {
 		void doBody(boolean discard) throws E, IOException, SkipPageException;
 	}
