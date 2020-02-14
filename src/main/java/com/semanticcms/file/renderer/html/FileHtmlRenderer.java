@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-renderer-html - Files referenced in HTML in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,7 +25,7 @@ package com.semanticcms.file.renderer.html;
 import static com.aoindustries.encoding.JavaScriptInXhtmlAttributeEncoder.encodeJavaScriptInXhtmlAttribute;
 import com.aoindustries.encoding.NewEncodingUtils;
 import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
-import static com.aoindustries.encoding.TextInXhtmlEncoder.encodeTextInXhtml;
+import com.aoindustries.html.Html;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIEncoder;
@@ -45,7 +45,6 @@ import com.semanticcms.core.servlet.ServletElementContext;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Writer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -60,13 +59,13 @@ final public class FileHtmlRenderer {
 	}
 
 	/**
-	 * @param out Optional, when null meta data is verified but no output is generated
+	 * @param html Optional, when null meta data is verified but no output is generated
 	 */
 	public static void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
-		Writer out,
+		Html html,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
 		ResourceStore resourceStore;
@@ -119,7 +118,7 @@ final public class FileHtmlRenderer {
 					);
 				}
 			}
-			if(out != null) {
+			if(html != null) {
 				BufferResult body = element.getBody();
 				boolean hasBody = body.getLength() != 0;
 				// Determine if local file opening is allowed
@@ -127,25 +126,25 @@ final public class FileHtmlRenderer {
 				final boolean isExporting = Headers.isExporting(request);
 
 				String elemId = element.getId();
-				out.write("<a");
+				html.out.write("<a");
 				if(elemId != null) {
-					out.write(" id=\"");
+					html.out.write(" id=\"");
 					encodeTextInXhtmlAttribute(
 						PageIndex.getRefIdInPage(request, element.getPage(), elemId),
-						out
+						html.out
 					);
-					out.append('"');
+					html.out.append('"');
 				}
 				if(!hasBody) {
 					// TODO: Class like core:link, where providing empty class disables automatic class selection here
 					String linkCssClass = HtmlRenderer.getInstance(servletContext).getLinkCssClass(element);
 					if(linkCssClass != null) {
-						out.write(" class=\"");
-						encodeTextInXhtmlAttribute(linkCssClass, out);
-						out.write('"');
+						html.out.write(" class=\"");
+						encodeTextInXhtmlAttribute(linkCssClass, html.out);
+						html.out.write('"');
 					}
 				}
-				out.write(" href=\"");
+				html.out.write(" href=\"");
 				if(
 					isOpenFileAllowed
 					&& resourceFile != null
@@ -153,7 +152,7 @@ final public class FileHtmlRenderer {
 				) {
 					encodeTextInXhtmlAttribute(
 						response.encodeURL(resourceFile.toURI().toASCIIString()),
-						out
+						html.out
 					);
 				} else {
 					final String urlPath;
@@ -183,26 +182,26 @@ final public class FileHtmlRenderer {
 					}
 					encodeTextInXhtmlAttribute(
 						response.encodeURL(URIEncoder.encodeURI(urlPath)),
-						out
+						html.out
 					);
 				}
-				out.write('"');
+				html.out.write('"');
 				if(
 					isOpenFileAllowed
 					&& resourceFile != null
 					&& !isExporting
 				) {
-					out.write(" onclick=\"");
-					encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
-					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain().toString(), out);
-					encodeJavaScriptInXhtmlAttribute("\", \"", out);
-					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getPath().toString(), out);
-					encodeJavaScriptInXhtmlAttribute("\", \"", out);
-					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath().toString(), out);
-					encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
-					out.write('"');
+					html.out.write(" onclick=\"");
+					encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", html.out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain().toString(), html.out);
+					encodeJavaScriptInXhtmlAttribute("\", \"", html.out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getPath().toString(), html.out);
+					encodeJavaScriptInXhtmlAttribute("\", \"", html.out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath().toString(), html.out);
+					encodeJavaScriptInXhtmlAttribute("\"); return false;", html.out);
+					html.out.write('"');
 				}
-				out.write('>');
+				html.out.write('>');
 				if(!hasBody) {
 					if(resourceFile == null) {
 						String path = resourceRef.getPath().toString();
@@ -214,15 +213,15 @@ final public class FileHtmlRenderer {
 						}
 						String filename = path.substring(slashBefore + 1);
 						if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
-						encodeTextInXhtml(filename, out);
+						html.text(filename);
 					} else {
-						encodeTextInXhtml(resourceFile.getName(), out);
-						if(isDirectory) encodeTextInXhtml(Path.SEPARATOR_CHAR, out);
+						html.text(resourceFile.getName());
+						if(isDirectory) html.text(Path.SEPARATOR_CHAR);
 					}
 				} else {
-					body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));
+					body.writeTo(new NodeBodyWriter(element, html.out, new ServletElementContext(servletContext, request, response)));
 				}
-				out.write("</a>");
+				html.out.write("</a>");
 				long length;
 				if(
 					!hasBody
@@ -231,9 +230,9 @@ final public class FileHtmlRenderer {
 					&& conn.exists()
 					&& (length = conn.getLength()) != -1
 				) {
-					out.write(" (");
-					encodeTextInXhtml(StringUtility.getApproximateSize(length), out);
-					out.write(')');
+					html.out.write(" (");
+					html.text(StringUtility.getApproximateSize(length));
+					html.out.write(')');
 				}
 			}
 		} finally {
