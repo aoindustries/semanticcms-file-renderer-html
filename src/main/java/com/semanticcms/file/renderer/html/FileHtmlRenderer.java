@@ -29,7 +29,7 @@ import com.aoindustries.html.Html;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIEncoder;
-import com.aoindustries.servlet.http.LastModifiedServlet;
+import com.aoindustries.servlet.lastmodified.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
 import com.aoindustries.util.Tuple2;
 import com.semanticcms.core.model.BookRef;
