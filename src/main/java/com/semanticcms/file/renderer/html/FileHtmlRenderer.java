@@ -30,7 +30,7 @@ import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIEncoder;
 import com.aoindustries.servlet.lastmodified.LastModifiedServlet;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.util.Tuple2;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.NodeBodyWriter;
@@ -231,7 +231,7 @@ final public class FileHtmlRenderer {
 					&& (length = conn.getLength()) != -1
 				) {
 					html.out.write(" (");
-					html.text(StringUtility.getApproximateSize(length));
+					html.text(Strings.getApproximateSize(length));
 					html.out.write(')');
 				}
 			}
