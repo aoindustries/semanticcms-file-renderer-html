@@ -30,7 +30,7 @@ Files referenced in HTML in a Servlet environment.
 * [Project Home](https://semanticcms.com/file/renderer/html/)
 * [Changelog](https://semanticcms.com/file/renderer/html/changelog)
 * [API Docs](https://semanticcms.com/file/renderer/html/apidocs/)
-* [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.semanticcms%22%20AND%20a:%22semanticcms-file-renderer-html%22)
+* [Maven Central Repository](https://search.maven.org/artifact/com.semanticcms/semanticcms-file-renderer-html)
 * [GitHub](https://github.com/aoindustries/semanticcms-file-renderer-html)
 
 ## Contact Us
