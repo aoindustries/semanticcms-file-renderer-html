@@ -33,9 +33,9 @@ along with semanticcms-file-renderer-html.  If not, see <http://www.gnu.org/lice
 	<packaging>bundle</packaging>
 
 	<properties>
-		<javadoc.breadcrumbs><![CDATA[<a target="_top" href="https://semanticcms.com/">SemanticCMS</a>
-/ <a target="_top" href="https://semanticcms.com/file/">File</a>
-/ <a target="_top" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
+		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="https://semanticcms.com/">SemanticCMS</a>
+/ <a target="${javadoc.target}" href="https://semanticcms.com/file/">File</a>
+/ <a target="${javadoc.target}" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
 		<shortTitle>Renderer HTML</shortTitle>
 	</properties>
 
