@@ -76,11 +76,11 @@ along with semanticcms-file-renderer-html.  If not, see <http://www.gnu.org/lice
 								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								<link>https://aoindustries.com/ao-servlet-last-modified/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
-								<link>https://semanticcms.com/core/controller/apidocs/</link>
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/controller/apidocs/</link> -->
 								<link>https://semanticcms.com/core/model/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/apidocs/</link>
-								<link>https://semanticcms.com/core/renderer/html/apidocs/</link>
-								<link>https://semanticcms.com/core/resources/apidocs/</link>
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/renderer/html/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/resources/apidocs/</link> -->
 								<link>https://semanticcms.com/core/servlet/apidocs/</link>
 								<link>https://semanticcms.com/file/model/apidocs/</link>
 								<link>https://semanticcms.com/openfile/servlet/apidocs/</link>
