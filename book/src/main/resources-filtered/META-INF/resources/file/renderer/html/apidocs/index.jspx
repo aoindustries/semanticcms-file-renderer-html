@@ -35,7 +35,7 @@ along with semanticcms-file-renderer-html.  If not, see <http://www.gnu.org/lice
 		<ao:forward page="index.html" />
 	</c:if>
 	<core:page
-		title="@{documented.name} @{com.semanticcms:semanticcms-file-renderer-html:pom.version} API Docs"
+		title="@{documented.name} ${ao:getProjectVersion('./', 'com.semanticcms', 'semanticcms-file-renderer-html', '¿@{project.version}?')} API Docs"
 		shortTitle="API Docs"
 		datePublished="2017-08-26T16:44:50-0500"
 		dateModified="${ao:getLastModified('index.html')}"
