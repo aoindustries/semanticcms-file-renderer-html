@@ -22,11 +22,8 @@
  */
 package com.semanticcms.file.renderer.html;
 
-import static com.aoindustries.encoding.JavaScriptInXhtmlAttributeEncoder.javaScriptInXhtmlAttributeEncoder;
-import com.aoindustries.encoding.MediaWriter;
-import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
-import com.aoindustries.html.Document;
-import com.aoindustries.io.NoCloseWriter;
+import com.aoindustries.html.A;
+import com.aoindustries.html.Union_Palpable_Phrasing;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.lang.Strings;
 import com.aoindustries.net.Path;
@@ -60,13 +57,13 @@ final public class FileHtmlRenderer {
 	}
 
 	/**
-	 * @param document Optional, when null meta data is verified but no output is generated
+	 * @param content Optional, when null meta data is verified but no output is generated
 	 */
-	public static void writeFileImpl(
+	public static <__ extends Union_Palpable_Phrasing<__>> void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
-		Document document,
+		__ content,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
 		ResourceStore resourceStore;
@@ -84,19 +81,20 @@ final public class FileHtmlRenderer {
 		ResourceConnection conn = resource == null ? null : resource.open();
 		try {
 			// Find the local file, if available
-			File resourceFile;
-			{
+			File resourceFile; {
+				File resourceFile_;
 				if(conn == null || !conn.exists()) {
-					resourceFile = null;
+					resourceFile_ = null;
 				} else {
 					assert resource != null;
 					try {
-						resourceFile = resource.getFile();
+						resourceFile_ = resource.getFile();
 					} catch(FileNotFoundException e) {
 						// Resource removed between exists() and getFile()
-						resourceFile = null;
+						resourceFile_ = null;
 					}
 				}
+				resourceFile = resourceFile_;
 			}
 			// Check if is directory and filename matches required pattern for directory
 			boolean isDirectory;
@@ -119,7 +117,7 @@ final public class FileHtmlRenderer {
 					);
 				}
 			}
-			if(document != null) {
+			if(content != null) {
 				BufferResult body = element.getBody();
 				boolean hasBody = body.getLength() != 0;
 				// Determine if local file opening is allowed
@@ -127,34 +125,21 @@ final public class FileHtmlRenderer {
 				final boolean isExporting = Headers.isExporting(request);
 
 				String elemId = element.getId();
-				document.out.write("<a");
+				A<__> a = content.a();
 				if(elemId != null) {
-					document.out.write(" id=\"");
-					encodeTextInXhtmlAttribute(
-						PageIndex.getRefIdInPage(request, element.getPage(), elemId),
-						document.out
-					);
-					document.out.append('"');
+					// TODO: To appendIdInPage, review other uses, too
+					a.id(PageIndex.getRefIdInPage(request, element.getPage(), elemId));
 				}
 				if(!hasBody) {
 					// TODO: Class like core:link, where providing empty class disables automatic class selection here
-					String linkCssClass = HtmlRenderer.getInstance(servletContext).getLinkCssClass(element);
-					if(linkCssClass != null) {
-						document.out.write(" class=\"");
-						encodeTextInXhtmlAttribute(linkCssClass, document.out);
-						document.out.write('"');
-					}
+					a.clazz(HtmlRenderer.getInstance(servletContext).getLinkCssClass(element));
 				}
-				document.out.write(" href=\"");
 				if(
 					isOpenFileAllowed
 					&& resourceFile != null
 					&& !isExporting
 				) {
-					encodeTextInXhtmlAttribute(
-						response.encodeURL(resourceFile.toURI().toASCIIString()),
-						document.out
-					);
+					a.href(response.encodeURL(resourceFile.toURI().toASCIIString()));
 				} else {
 					final String urlPath;
 					long lastModified;
@@ -181,44 +166,38 @@ final public class FileHtmlRenderer {
 							+ resourceRef.getPath()
 						;
 					}
-					encodeTextInXhtmlAttribute(
-						response.encodeURL(URIEncoder.encodeURI(urlPath)),
-						document.out
-					);
+					a.href(response.encodeURL(URIEncoder.encodeURI(urlPath)));
 				}
-				document.out.write('"');
 				if(
 					isOpenFileAllowed
 					&& resourceFile != null
 					&& !isExporting
 				) {
-					document.out.write(" onclick=\"");
-					try (MediaWriter onclick = new MediaWriter(document.encodingContext, javaScriptInXhtmlAttributeEncoder, new NoCloseWriter(document.out))) {
-						onclick.append("semanticcms_openfile_servlet.openFile(").text(bookRef.getDomain()).append(", ").text(bookRef.getPath()).append(", ").text(resourceRef.getPath()).append("); return false;");
-					}
-					document.out.write('"');
+					a.onclick(onclick -> onclick
+						.append("semanticcms_openfile_servlet.openFile(").text(bookRef.getDomain()).append(", ").text(bookRef.getPath()).append(", ").text(resourceRef.getPath()).append("); return false;")
+					);
 				}
-				document.out.write('>');
-				if(!hasBody) {
-					if(resourceFile == null) {
-						String path = resourceRef.getPath().toString();
-						int slashBefore;
-						if(path.endsWith(Path.SEPARATOR_STRING)) {
-							slashBefore = path.lastIndexOf(Path.SEPARATOR_STRING, path.length() - 2);
+				a.__(a__ -> {
+					if(!hasBody) {
+						if(resourceFile == null) {
+							String path = resourceRef.getPath().toString();
+							int slashBefore;
+							if(path.endsWith(Path.SEPARATOR_STRING)) {
+								slashBefore = path.lastIndexOf(Path.SEPARATOR_STRING, path.length() - 2);
+							} else {
+								slashBefore = path.lastIndexOf(Path.SEPARATOR_STRING);
+							}
+							String filename = path.substring(slashBefore + 1);
+							if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
+							a__.text(filename);
 						} else {
-							slashBefore = path.lastIndexOf(Path.SEPARATOR_STRING);
+							a__.text(resourceFile.getName());
+							if(isDirectory) a__.text(Path.SEPARATOR_CHAR);
 						}
-						String filename = path.substring(slashBefore + 1);
-						if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
-						document.text(filename);
 					} else {
-						document.text(resourceFile.getName());
-						if(isDirectory) document.text(Path.SEPARATOR_CHAR);
+						body.writeTo(new NodeBodyWriter(element, a__.getDocument().out, new ServletElementContext(servletContext, request, response)));
 					}
-				} else {
-					body.writeTo(new NodeBodyWriter(element, document.out, new ServletElementContext(servletContext, request, response)));
-				}
-				document.out.write("</a>");
+				});
 				long length;
 				if(
 					!hasBody
@@ -227,9 +206,7 @@ final public class FileHtmlRenderer {
 					&& conn.exists()
 					&& (length = conn.getLength()) != -1
 				) {
-					document.out.write(" (");
-					document.text(Strings.getApproximateSize(length));
-					document.out.write(')');
+					content.text(" (").text(Strings.getApproximateSize(length)).text(')');
 				}
 			}
 		} finally {
