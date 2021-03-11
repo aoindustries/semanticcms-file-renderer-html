@@ -23,6 +23,7 @@
 package com.semanticcms.file.renderer.html;
 
 import com.aoindustries.html.A;
+import com.aoindustries.html.AnyDocument;
 import com.aoindustries.html.Union_Palpable_Phrasing;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.lang.Strings;
@@ -51,15 +52,21 @@ import javax.servlet.jsp.SkipPageException;
 
 final public class FileHtmlRenderer {
 
+	/**
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
+	 */
 	@FunctionalInterface
-	public static interface FileImplBody<E extends Throwable> {
-		void doBody(boolean discard) throws E, IOException, SkipPageException;
+	public static interface FileImplBody<Ex extends Throwable> {
+		void doBody(boolean discard) throws Ex, IOException, SkipPageException;
 	}
 
 	/**
 	 * @param content Optional, when null meta data is verified but no output is generated
 	 */
-	public static <__ extends Union_Palpable_Phrasing<__>> void writeFileImpl(
+	public static <
+		D extends AnyDocument<D>,
+		__ extends Union_Palpable_Phrasing<D, __>
+	> void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -125,7 +132,7 @@ final public class FileHtmlRenderer {
 				final boolean isExporting = Headers.isExporting(request);
 
 				String elemId = element.getId();
-				A<__> a = content.a();
+				A<D, __> a = content.a();
 				if(elemId != null) {
 					// TODO: To appendIdInPage, review other uses, too
 					a.id(PageIndex.getRefIdInPage(request, element.getPage(), elemId));
