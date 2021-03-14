@@ -22,9 +22,9 @@
  */
 package com.semanticcms.file.renderer.html;
 
-import com.aoindustries.html.A;
-import com.aoindustries.html.AnyDocument;
-import com.aoindustries.html.Union_Palpable_Phrasing;
+import com.aoindustries.html.any.AnyA;
+import com.aoindustries.html.any.AnyDocument;
+import com.aoindustries.html.any.AnyUnion_Palpable_Phrasing;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.lang.Strings;
 import com.aoindustries.net.Path;
@@ -44,6 +44,7 @@ import com.semanticcms.core.servlet.ServletElementContext;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Writer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,7 @@ final public class FileHtmlRenderer {
 	 */
 	public static <
 		D extends AnyDocument<D>,
-		__ extends Union_Palpable_Phrasing<D, __>
+		__ extends AnyUnion_Palpable_Phrasing<D, __>
 	> void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
@@ -132,7 +133,7 @@ final public class FileHtmlRenderer {
 				final boolean isExporting = Headers.isExporting(request);
 
 				String elemId = element.getId();
-				A<D, __> a = content.a();
+				AnyA<D, __, ?, ?> a = content.a();
 				if(elemId != null) {
 					// TODO: To appendIdInPage, review other uses, too
 					a.id(PageIndex.getRefIdInPage(request, element.getPage(), elemId));
@@ -202,7 +203,9 @@ final public class FileHtmlRenderer {
 							if(isDirectory) a__.text(Path.SEPARATOR_CHAR);
 						}
 					} else {
-						body.writeTo(new NodeBodyWriter(element, a__.getDocument().out, new ServletElementContext(servletContext, request, response)));
+						try (Writer unsafe = a__.getDocument().unsafe()) {
+							body.writeTo(new NodeBodyWriter(element, unsafe, new ServletElementContext(servletContext, request, response)));
+						}
 					}
 				});
 				long length;
