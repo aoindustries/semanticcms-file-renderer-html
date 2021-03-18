@@ -199,9 +199,7 @@ final public class FileHtmlRenderer {
 							if(isDirectory) a__.text(Path.SEPARATOR_CHAR);
 						}
 					} else {
-						try (Writer unsafe = a__.getDocument().unsafe()) {
-							body.writeTo(new NodeBodyWriter(element, unsafe, new ServletElementContext(servletContext, request, response)));
-						}
+						body.writeTo(new NodeBodyWriter(element, a__.getUnsafe(), new ServletElementContext(servletContext, request, response)));
 					}
 				});
 				long length;
