@@ -22,14 +22,14 @@
  */
 package com.semanticcms.file.renderer.html;
 
-import com.aoindustries.html.any.AnyA;
-import com.aoindustries.html.any.AnyUnion_Palpable_Phrasing;
-import com.aoindustries.io.buffer.BufferResult;
-import com.aoindustries.lang.Strings;
-import com.aoindustries.net.Path;
-import com.aoindustries.net.URIEncoder;
-import com.aoindustries.servlet.lastmodified.LastModifiedServlet;
-import com.aoindustries.util.Tuple2;
+import com.aoapps.hodgepodge.util.Tuple2;
+import com.aoapps.html.any.AnyA;
+import com.aoapps.html.any.AnyUnion_Palpable_Phrasing;
+import com.aoapps.io.buffer.BufferResult;
+import com.aoapps.lang.Strings;
+import com.aoapps.net.Path;
+import com.aoapps.net.URIEncoder;
+import com.aoapps.servlet.lastmodified.LastModifiedServlet;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.ResourceRef;
@@ -43,7 +43,6 @@ import com.semanticcms.core.servlet.ServletElementContext;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Writer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
