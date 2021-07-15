@@ -83,6 +83,11 @@ along with semanticcms-file-renderer-html.  If not, see <http://www.gnu.org/lice
 		<url>https://github.com/aoindustries/semanticcms-file-renderer-html/issues</url>
 	</issueManagement>
 
+	<ciManagement>
+		<system>GitHub Actions</system>
+		<url>https://github.com/aoindustries/semanticcms-file-renderer-html/actions</url>
+	</ciManagement>
+
 	<repositories>
 		<!-- Repository required here, too, so can find parent -->
 		<repository>
